@@ -62,6 +62,74 @@
     }, 200);
   }
 
+  var BLOCKED_MODAL_PHRASES = [
+    'unsupported vexcode',
+    'ipad os',
+    'ipados',
+    'unsupported web browser',
+    'not support text project on tablets',
+    'not support vr text project on tablets',
+    'mobile devices',
+    'visit the app store',
+    'google play store',
+  ];
+
+  function dismissUnsupportedModals() {
+    function shouldDismiss(text) {
+      var t = (text || '').toLowerCase();
+      if (!t) return false;
+      for (var i = 0; i < BLOCKED_MODAL_PHRASES.length; i++) {
+        if (t.indexOf(BLOCKED_MODAL_PHRASES[i]) !== -1) return true;
+      }
+      return false;
+    }
+
+    function removeNode(node) {
+      if (!node) return;
+      var layer =
+        node.closest('.ReactModal__Overlay') ||
+        node.closest('[class*="lightbox"]') ||
+        node.closest('[class*="Lightbox"]') ||
+        node.parentElement;
+      if (layer && layer.parentElement) {
+        layer.parentElement.removeChild(layer);
+      } else {
+        node.style.setProperty('display', 'none', 'important');
+      }
+    }
+
+    document.querySelectorAll('.alert_window_2, .alert_window, .window.alert_window_2').forEach(
+      function (win) {
+        if (!shouldDismiss(win.innerText)) return;
+        removeNode(win);
+        var closeBtn = win.querySelector('button');
+        if (closeBtn) {
+          try {
+            closeBtn.click();
+          } catch (e) {}
+        }
+      }
+    );
+  }
+
+  function watchUnsupportedModals() {
+    dismissUnsupportedModals();
+    var ticks = 0;
+    var timer = setInterval(function () {
+      ticks += 1;
+      dismissUnsupportedModals();
+      if (ticks >= 40) clearInterval(timer);
+    }, 500);
+
+    if (typeof MutationObserver !== 'undefined') {
+      var observer = new MutationObserver(dismissUnsupportedModals);
+      observer.observe(document.body, { childList: true, subtree: true });
+      setTimeout(function () {
+        observer.disconnect();
+      }, 30000);
+    }
+  }
+
   function setEnglishPrefs() {
     try {
       localStorage.setItem('selectedLanguage', 'en');
@@ -401,11 +469,13 @@
   patchFetch();
   forceExpandLogicCategories();
   watchSettingsMenuItems();
+  watchUnsupportedModals();
 
   waitForAppReady(function (ready) {
     if (!ready) return;
     lockLanguageOnce();
     hideSettingsMenuItems();
     watchTopmenuForThemeToggle();
+    dismissUnsupportedModals();
   });
 })();

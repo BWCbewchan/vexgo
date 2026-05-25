@@ -4,13 +4,27 @@ import React, { useState, useEffect } from "react";
 
 export default function Home() {
   const [serverIp, setServerIp] = useState("192.168.1.X");
+  const [serverPort, setServerPort] = useState("3000");
   const [activeTab, setActiveTab] = useState("android");
+
+  const workspaceUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/webapp/index.html`
+      : "/webapp/index.html";
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const hostname = window.location.hostname;
       if (hostname !== "localhost" && hostname !== "127.0.0.1") {
         setServerIp(hostname);
+      }
+      setServerPort(window.location.port || "3000");
+      const ua = navigator.userAgent || "";
+      const isAppleTablet =
+        /iPad/i.test(navigator.platform || "") ||
+        (ua.includes("Mac") && navigator.maxTouchPoints > 1);
+      if (isAppleTablet) {
+        setActiveTab("ios");
       }
     }
   }, []);
@@ -63,7 +77,7 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-lg text-zinc-400 max-w-xl leading-relaxed">
-              Extracted from the official package. Runs entirely in your browser on tablets or computers with no internet or local server processes required, eliminating cloud compiler errors.
+              Optimized for phones and tablets: block coding and robot control in the browser. Works on Android Chrome and iPad (Bluefy or Chrome). No cloud compiler required.
             </p>
             <p className="text-sm text-amber-200/90 max-w-xl leading-relaxed border border-amber-500/25 bg-amber-500/10 rounded-xl px-4 py-3">
               Cursor&apos;s built-in browser preview cannot run VEXcode GO (the app bundle is ~51MB). Use{" "}
@@ -76,7 +90,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-gradient-to-r from-orange-600 to-orange-500 text-black font-bold text-lg flex items-center justify-center gap-3 hover:from-orange-500 hover:to-orange-400 transition-all duration-300 shadow-xl shadow-orange-600/20 hover:shadow-orange-500/35 hover:-translate-y-0.5"
               >
-                Open in Chrome / Edge
+                Open workspace
                 <svg
                   className="h-5 w-5 stroke-2"
                   viewBox="0 0 24 24"
@@ -178,9 +192,9 @@ export default function Home() {
         {/* Tablet Setup Guide */}
         <section id="tablet-setup" className="border border-zinc-800 rounded-3xl bg-zinc-900/20 backdrop-blur-sm p-8 md:p-12 flex flex-col gap-10">
           <div className="text-center max-w-2xl mx-auto flex flex-col gap-3">
-            <h2 className="text-3xl font-extrabold text-white">Configure Bluetooth for Tablets</h2>
+            <h2 className="text-3xl font-extrabold text-white">Tablet &amp; phone setup (Bluetooth)</h2>
             <p className="text-zinc-500 text-sm">
-              Mobile and tablet browsers restrict Web Bluetooth to secure origins. Follow these simple steps to allow local connections.
+              The workspace runs on iPad and Android tablets. Web Bluetooth needs a supported browser and (on local HTTP) one-time Chrome flags on Android.
             </p>
           </div>
 
@@ -251,7 +265,7 @@ export default function Home() {
                       <p className="text-sm text-zinc-400 leading-relaxed">
                         Enter your local web host IP address in the text box below:
                         <span className="block mt-2 font-mono text-orange-400 px-3 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 select-all">
-                          {`http://${serverIp}:8088`}
+                          {`http://${serverIp}:${serverPort}`}
                         </span>
                       </p>
                     </div>
@@ -276,9 +290,9 @@ export default function Home() {
                       1
                     </div>
                     <div>
-                      <h4 className="text-white font-bold mb-1">Use a Web Bluetooth-enabled Browser</h4>
+                      <h4 className="text-white font-bold mb-1">Open the workspace on iPad</h4>
                       <p className="text-sm text-zinc-400 leading-relaxed">
-                        Native iOS Safari does not support Web Bluetooth. Download a Web Bluetooth-capable browser from the App Store, such as **Bluefy** (fully free).
+                        Use **Bluefy** or **Chrome** on iPad for Web Bluetooth. Safari can open the editor, but connecting the GO Brain needs Bluefy or Chrome.
                       </p>
                     </div>
                   </div>
@@ -290,9 +304,9 @@ export default function Home() {
                     <div>
                       <h4 className="text-white font-bold mb-1">Access the Workspace Directly</h4>
                       <p className="text-sm text-zinc-400 leading-relaxed">
-                        Open **Bluefy** on your iPad and navigate to your local server URL:
+                        Open **Bluefy** or **Chrome** on your iPad and go to:
                         <span className="block mt-2 font-mono text-orange-400 px-3 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 select-all">
-                          {`http://${serverIp}:8088/webapp/index.html`}
+                          {workspaceUrl}
                         </span>
                       </p>
                     </div>
@@ -329,7 +343,7 @@ export default function Home() {
               <div className="p-4 rounded-xl bg-orange-500/5 border border-orange-500/10 flex flex-col gap-2">
                 <span className="text-xs text-zinc-400 font-bold">Flag Input Target:</span>
                 <code className="text-xs font-mono text-orange-400 break-all select-all">
-                  {`http://${serverIp}:8088`}
+                  {`http://${serverIp}:${serverPort}`}
                 </code>
               </div>
             </div>
