@@ -157,19 +157,12 @@
   }
 
   watchBlocks();
-  var poll = setInterval(watchBlocks, 250);
-  setTimeout(function () {
-    clearInterval(poll);
-  }, 120000);
-
-  if (typeof MutationObserver !== 'undefined') {
-    var observer = new MutationObserver(watchBlocks);
-    var startObserver = function () {
-      observer.observe(document.documentElement, { childList: true, subtree: true });
-    };
-    if (document.body) startObserver();
-    else document.addEventListener('DOMContentLoaded', startObserver);
-  }
+  var ticks = 0;
+  var poll = setInterval(function () {
+    ticks += 1;
+    watchBlocks();
+    if (ticks >= 24) clearInterval(poll);
+  }, 2000);
 
   window.__VEXGO_MOBILE_WEB_ENABLED__ = true;
 })();

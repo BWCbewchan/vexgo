@@ -1,0 +1,236 @@
+/* VEX Class — embedded in #brain_info + side/tab shortcuts */
+
+#vexgo-classroom-tab {
+  cursor: pointer;
+}
+
+#vexgo-classroom-tab img {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* Taller brain dropdown when Class section is active */
+#brain_info.vexgo-classroom-expanded {
+  width: min(440px, 92vw);
+  max-height: min(85vh, 720px);
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+#brain_info .vexgo-classroom-embed {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px solid #0875e2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+#brain_info .vc-embed-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#brain_info .vc-show-btn {
+  margin-left: auto;
+  border: 1px solid #0875e2;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0875e2;
+  background: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#brain_info .vc-show-btn:hover {
+  background: #ebf4fb;
+}
+
+#brain_info .vexgo-classroom-body.is-collapsed {
+  display: none;
+}
+
+#brain_info .vexgo-classroom-embed:not(.is-expanded) {
+  gap: 0;
+  padding-bottom: 4px;
+}
+
+#brain_info .vc-embed-head > div:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+#brain_info .vc-embed-head strong {
+  display: block;
+  font-size: 15px;
+  color: #0875e2;
+}
+
+#brain_info .vc-embed-sub {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+  font-weight: normal;
+}
+
+#brain_info .vc-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+#brain_info .vc-badge.is-on {
+  background: #dcfce7;
+  color: #166534;
+}
+
+#brain_info .vc-badge.is-off {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+#brain_info .vc-status {
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fef3c7;
+  color: #92400e;
+  line-height: 1.35;
+}
+
+#brain_info .vc-status.ok {
+  background: #dcfce7;
+  color: #166534;
+}
+
+#brain_info .vc-section h4 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #0875e2;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+#brain_info label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+#brain_info .vexgo-classroom-embed input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #94a3b8;
+  border-radius: 8px;
+  padding: 9px 10px;
+  font-size: 14px;
+}
+
+#brain_info .vc-row-inline {
+  display: flex;
+  gap: 8px;
+}
+
+#brain_info .vc-row-inline input {
+  flex: 1;
+}
+
+#brain_info .vc-primary {
+  border: none;
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: #0875e2;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#brain_info .vc-muted {
+  margin: 0;
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+#brain_info .vc-device-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #d9e7f3;
+  border-radius: 8px;
+  background: #fff;
+}
+
+#brain_info .vc-device-item {
+  padding: 9px 11px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+#brain_info .vc-device-item:last-child {
+  border-bottom: none;
+}
+
+#brain_info .vc-device-name {
+  font-weight: 700;
+  color: #0875e2;
+  font-size: 13px;
+}
+
+#brain_info .vc-device-meta {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+#brain_info .vc-device-empty {
+  padding: 12px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+#brain_info .vc-actions {
+  display: grid;
+  gap: 8px;
+}
+
+#brain_info .vc-actions-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+#brain_info .vc-actions-4 {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+#brain_info .vc-actions button {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+  background: #0875e2;
+}
+
+@media (max-width: 520px) {
+  #brain_info .vc-actions-3,
+  #brain_info .vc-actions-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+}

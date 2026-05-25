@@ -2,10 +2,20 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+        />
+        <meta name="theme-color" content="#007078" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="VEX GO" />
         <base href="./" />
 
+        <link rel="manifest" href="./manifest.webmanifest" />
         <link rel="icon" href="./static/img/icons/vexfavicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="./pwa/icon-192.png" />
 
         <!-- Lock UI language to English before VEXcode boots -->
         <script>
@@ -77,6 +87,10 @@
         <link href="./dist/static/css/ui.css" rel="stylesheet" />
         <link href="style/global.css" rel="stylesheet" />
         <link href="theme-toggle.css" rel="stylesheet" />
+        <link href="classroom-panel.css" rel="stylesheet" />
+        <link href="install-app.css" rel="stylesheet" />
+        <link href="eye-sensor-panel.css" rel="stylesheet" />
+        <link href="vexgo-mobile.css" rel="stylesheet" />
         <link href="style/PrismStyles/prism-vex-py.css" rel="stylesheet" />
     </head>
     <body>
@@ -84,6 +98,7 @@
 
         <!-- Allow tablets/phones before platformInfo runs in main.bundle.js -->
         <script src="mobile-enable.js"></script>
+        <script src="install-app.js"></script>
         <!-- Blockly, React, and main.bundle.js are loaded by boot.js (skipped in Cursor preview) -->
         <script src="boot.js"></script>
 

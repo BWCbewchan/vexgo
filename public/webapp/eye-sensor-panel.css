@@ -1,0 +1,135 @@
+/* Eye Sensor — side_panel_controls button + popup panel */
+
+/* LED Bumper — same vertical slot as other side_panel_controls icons */
+#vexgo-bumper-dot.vexgo-bumper-dot {
+  cursor: default;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  pointer-events: none;
+  overflow: visible;
+}
+
+#vexgo-bumper-dot .vexgo-bumper-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2em;
+  width: auto;
+  box-sizing: content-box;
+}
+
+#vexgo-bumper-dot .vexgo-bumper-svg {
+  height: 100%;
+  width: auto;
+  max-height: 2em;
+}
+
+#vexgo-bumper-dot .vexgo-bumper-svg path {
+  fill: #ef4444;
+  transition: fill 0.15s ease;
+}
+
+#vexgo-bumper-dot.is-pressed .vexgo-bumper-svg path {
+  fill: #22c55e;
+}
+
+#vexgo-bumper-dot.is-released .vexgo-bumper-svg path {
+  fill: #ef4444;
+}
+
+#vexgo-bumper-dot .vexgo-bumper-label {
+  position: absolute;
+  left: 50%;
+  bottom: 1px;
+  transform: translateX(-50%);
+  font-size: 7px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #334155;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+#vexgo-eye-toggle.side_panel_btn {
+  cursor: pointer;
+}
+
+#vexgo-eye-toggle img {
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+}
+
+#vexgo-eye-toggle.active {
+  outline: 2px solid #007078;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+#vexgo-eye-panel {
+  display: none;
+  position: fixed;
+  z-index: 2147482990;
+  width: min(300px, 92vw);
+  max-height: min(70vh, 420px);
+  overflow: hidden;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #007078;
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+#vexgo-eye-panel.is-open {
+  display: flex;
+}
+
+#vexgo-eye-panel .vexgo-eye-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #007078;
+  color: #fff;
+}
+
+#vexgo-eye-panel .vexgo-eye-panel-head strong {
+  flex: 1;
+  font-size: 14px;
+}
+
+#vexgo-eye-panel #vexgo-eye-close {
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+#vexgo-eye-panel .vc-eye-sensor-wrap {
+  overflow-y: auto;
+  max-height: 340px;
+  margin: 0;
+}
+
+#vexgo-eye-panel .vc-eye-empty {
+  padding: 14px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+#vexgo-eye-panel .sensor_row_label,
+#vexgo-eye-panel .sensor_row_value {
+  font-size: 12px;
+}

@@ -32,3 +32,5 @@ scratch/
 # Android packages (GitHub limit 100MB per file)
 *.apk
 *.xapk
+# Bundled classroom installer for offline portal
+!public/webapp/classroom/*.xapk

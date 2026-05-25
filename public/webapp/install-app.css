@@ -1,0 +1,107 @@
+#vexgo-install-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  background: rgba(15, 23, 42, 0.72);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+#vexgo-install-overlay.is-open {
+  display: flex;
+}
+
+#vexgo-install-dialog {
+  width: min(440px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px 22px;
+  color: #1e293b;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+#vexgo-install-dialog h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #0875e2;
+}
+
+#vexgo-install-dialog p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #475569;
+}
+
+#vexgo-install-dialog ol {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #334155;
+}
+
+#vexgo-install-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#vexgo-install-actions button {
+  flex: 1;
+  min-width: 120px;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#vexgo-install-primary {
+  background: #0875e2;
+  color: #fff;
+}
+
+#vexgo-install-close {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+/* Toolbar: install — teal (khác nút xanh Share), chỉ hiện trên web */
+.topmenu .toolbar_btn.vexgo-install-btn.tool_install_app {
+  background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%) !important;
+  border: 1px solid #0f766e !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset;
+}
+
+.topmenu .toolbar_btn.vexgo-install-btn.tool_install_app:hover,
+.topmenu .toolbar_btn.vexgo-install-btn.tool_install_app:focus {
+  background: linear-gradient(180deg, #2dd4bf 0%, #14b8a6 100%) !important;
+}
+
+.topmenu .toolbar_btn.vexgo-install-btn .icon_caption {
+  color: #fff !important;
+  font-weight: 700;
+}
+
+.topmenu .toolbar_btn.vexgo-install-btn .icon svg {
+  color: #fff;
+}
+
+.topmenu .toolbar_btn.vexgo-install-btn .icon path {
+  fill: #fff !important;
+}
+
+.topmenu .toolbar_btn.vexgo-install-hidden,
+.topmenu button.tool_share.vexgo-install-hidden {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

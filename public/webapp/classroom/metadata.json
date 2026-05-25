@@ -1,0 +1,22 @@
+{
+  "packageName": "com.vex.teacherapp",
+  "name": "VEX Class",
+  "version": "1.5.1.1-9cf4103",
+  "versionCode": "218327032",
+  "permissions": [
+    "android.permission.BLUETOOTH",
+    "android.permission.BLUETOOTH_SCAN",
+    "android.permission.BLUETOOTH_CONNECT",
+    "android.permission.BLUETOOTH_ADVERTISE",
+    "android.permission.BLUETOOTH_ADMIN",
+    "android.permission.ACCESS_FINE_LOCATION",
+    "android.permission.ACCESS_COARSE_LOCATION",
+    "android.permission.INTERNET",
+    "android.permission.ACCESS_WIFI_STATE",
+    "android.permission.CHANGE_WIFI_STATE",
+    "android.permission.CHANGE_NETWORK_STATE",
+    "android.permission.ACCESS_NETWORK_STATE"
+  ],
+  "description": "VEX Class teacher app (Android). BLE classroom control for VEX GO / 123. Web panel provides shortcuts; full broadcast requires the native app or connected Brain in VEXcode.",
+  "extractedAt": "2026-05-25T04:42:55.532Z"
+}

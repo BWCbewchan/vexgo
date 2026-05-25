@@ -157,7 +157,7 @@ export default function Home() {
         </section>
 
         {/* Feature Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-6 hover:border-zinc-700 transition-all duration-300">
             <div className="h-12 w-12 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center text-xl mb-6">
               📶
@@ -186,6 +186,23 @@ export default function Home() {
             <p className="text-zinc-500 text-sm leading-relaxed">
               Utilizes native browser Web Bluetooth and Web Serial APIs. Connect wirelessly to your VEX GO brain seamlessly right from Google Chrome.
             </p>
+          </div>
+
+          <div className="bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-6 hover:border-zinc-700 transition-all duration-300">
+            <div className="h-12 w-12 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-xl mb-6">
+              🏫
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">VEX Class (tích hợp)</h3>
+            <p className="text-zinc-500 text-sm leading-relaxed">
+              Giống app gốc: tab <strong className="text-zinc-300">Class</strong> mở modal đổi tên Brain, xem firmware/trạng thái, và kiểm tra cổng thiết bị (Ports).
+            </p>
+            <a
+              href="/webapp/classroom/VEX-Classroom.xapk"
+              download
+              className="inline-block mt-3 text-sm text-sky-400 hover:text-sky-300"
+            >
+              Tải VEX Class APK
+            </a>
           </div>
         </section>
 

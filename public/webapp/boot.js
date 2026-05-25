@@ -107,6 +107,16 @@
       patch.src = 'vexgo-patch.js';
       patch.defer = true;
       document.body.appendChild(patch);
+
+      var classroom = document.createElement('script');
+      classroom.src = 'classroom-panel.js';
+      classroom.defer = true;
+      document.body.appendChild(classroom);
+
+      var eyePanel = document.createElement('script');
+      eyePanel.src = 'eye-sensor-panel.js';
+      eyePanel.defer = true;
+      document.body.appendChild(eyePanel);
     });
   }
 

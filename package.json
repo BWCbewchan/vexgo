@@ -7,6 +7,7 @@
     "dev:next": "node scripts/sync-blockly-media.mjs && node scripts/dev-next.mjs",
     "dev:static": "node scripts/sync-blockly-media.mjs && node scripts/dev-static.mjs",
     "prebuild": "node scripts/sync-blockly-media.mjs",
+    "extract:classroom": "node scripts/extract-vex-classroom.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

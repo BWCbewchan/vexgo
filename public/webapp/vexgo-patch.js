@@ -506,6 +506,38 @@
     }
   }
 
+  /** User closing the BLE picker is normal — VEXcode logs it as ERROR. */
+  function patchQuietBleCancelLogs() {
+    var ignore = [
+      'user cancelled the requestdevice',
+      'user canceled the requestdevice',
+      'notfounderror: user cancelled',
+    ];
+
+    function shouldIgnore(args) {
+      var text = '';
+      for (var i = 0; i < args.length; i++) {
+        text += ' ' + String(args[i] && (args[i].message || args[i]));
+      }
+      text = text.toLowerCase();
+      for (var j = 0; j < ignore.length; j++) {
+        if (text.indexOf(ignore[j]) !== -1) return true;
+      }
+      return false;
+    }
+
+    ['error', 'warn'].forEach(function (level) {
+      var orig = console[level];
+      if (!orig || orig.__vexgoBlePatched) return;
+      console[level] = function () {
+        if (shouldIgnore(arguments)) return;
+        return orig.apply(console, arguments);
+      };
+      console[level].__vexgoBlePatched = true;
+    });
+  }
+
+  patchQuietBleCancelLogs();
   setEnglishPrefs();
   patchBlocklyMediaPaths();
   patchFetch();
@@ -513,11 +545,38 @@
   watchSettingsMenuItems();
   watchUnsupportedModals();
 
+  /** Light relay for VEX Class Eye Sensor while embed is expanded (uses webapp.goController). */
+  function bridgeGoStatusForClassroom() {
+    var started = false;
+    var tries = 0;
+    var wait = setInterval(function () {
+      tries += 1;
+      if (started || tries > 80) {
+        clearInterval(wait);
+        return;
+      }
+      if (typeof webapp === 'undefined' || !webapp.goController) return;
+      started = true;
+      clearInterval(wait);
+      setInterval(function () {
+        var eyePanel = document.getElementById('vexgo-eye-panel');
+        var classBody = document.getElementById('vexgo-classroom-body');
+        var eyeOpen = eyePanel && eyePanel.classList.contains('is-open');
+        var classOpen = classBody && !classBody.classList.contains('is-collapsed');
+        if (!eyeOpen && !classOpen) return;
+        try {
+          document.dispatchEvent(new CustomEvent('vexgo-go-status'));
+        } catch (e) {}
+      }, 700);
+    }, 400);
+  }
+
   waitForAppReady(function (ready) {
     if (!ready) return;
     lockLanguageOnce();
     hideSettingsMenuItems();
     watchTopmenuForThemeToggle();
     dismissUnsupportedModals();
+    bridgeGoStatusForClassroom();
   });
 })();
