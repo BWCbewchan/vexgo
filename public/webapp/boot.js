@@ -71,6 +71,7 @@
   }
 
   var scripts = [
+    'mobile-enable.js',
     'lib/@vexcode/blockly/blockly_compressed.js',
     'lib/@vexcode/blockly/blocks_compressed.js',
     'lib/@vexcode/blockly/cpp_compressed.js',

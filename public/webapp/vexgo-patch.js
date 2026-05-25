@@ -63,6 +63,9 @@
   }
 
   var BLOCKED_MODAL_PHRASES = [
+    'web-based vexcode',
+    'not supported on this browser',
+    'please use google chrome',
     'unsupported vexcode',
     'ipad os',
     'ipados',
@@ -72,6 +75,11 @@
     'mobile devices',
     'visit the app store',
     'google play store',
+    'google play',
+    'laptop or desktop',
+    'fire os',
+    'fireos',
+    'android browser',
   ];
 
   function dismissUnsupportedModals() {
@@ -98,35 +106,69 @@
       }
     }
 
-    document.querySelectorAll('.alert_window_2, .alert_window, .window.alert_window_2').forEach(
-      function (win) {
-        if (!shouldDismiss(win.innerText)) return;
-        removeNode(win);
-        var closeBtn = win.querySelector('button');
-        if (closeBtn) {
-          try {
-            closeBtn.click();
-          } catch (e) {}
-        }
+    var selectors =
+      '.alert_window_2, .alert_window, .window.alert_window_2, ' +
+      '.black_vca_lightbox, [class*="lightbox"], [class*="Lightbox"], ' +
+      '.ReactModal__Overlay';
+
+    document.querySelectorAll(selectors).forEach(function (win) {
+      if (!shouldDismiss(win.innerText)) return;
+      removeNode(win);
+      var closeBtn = win.querySelector('button');
+      if (closeBtn) {
+        try {
+          closeBtn.click();
+        } catch (e) {}
       }
-    );
+    });
+  }
+
+  function patchModalControl() {
+    var ctrl = window.MODALCONTROL;
+    if (!ctrl || ctrl.__vexgoPatchModal) return false;
+
+    function wrap(name) {
+      if (typeof ctrl[name] !== 'function') return;
+      var orig = ctrl[name];
+      ctrl[name] = function (message) {
+        var msg = typeof message === 'string' ? message : '';
+        if (msg && BLOCKED_MODAL_PHRASES.some(function (p) {
+          return msg.toLowerCase().indexOf(p) !== -1;
+        })) {
+          return;
+        }
+        return orig.apply(this, arguments);
+      };
+    }
+
+    wrap('showUnsupportedBrowser');
+    wrap('alert');
+    wrap('showBlocklyAlert');
+    ctrl.__vexgoPatchModal = true;
+    return true;
   }
 
   function watchUnsupportedModals() {
     dismissUnsupportedModals();
+    patchModalControl();
     var ticks = 0;
     var timer = setInterval(function () {
       ticks += 1;
       dismissUnsupportedModals();
-      if (ticks >= 40) clearInterval(timer);
-    }, 500);
+      patchModalControl();
+      if (ticks >= 120) clearInterval(timer);
+    }, 400);
 
     if (typeof MutationObserver !== 'undefined') {
-      var observer = new MutationObserver(dismissUnsupportedModals);
-      observer.observe(document.body, { childList: true, subtree: true });
+      var observer = new MutationObserver(function () {
+        dismissUnsupportedModals();
+        patchModalControl();
+      });
+      var target = document.body || document.documentElement;
+      if (target) observer.observe(target, { childList: true, subtree: true });
       setTimeout(function () {
         observer.disconnect();
-      }, 30000);
+      }, 120000);
     }
   }
 
