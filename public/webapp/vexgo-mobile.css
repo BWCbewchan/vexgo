@@ -1,227 +1,226 @@
 /**
- * VEX GO — mobile / tablet layout (phones, iPad Safari, PWA home screen)
+ * VEX GO — mobile / tablet layout (fit-to-width + touch targets)
  */
 
-/* Safe area (notch, home indicator) */
+/* Fit-to-width mode (vexgo-mobile-fit.js sets --vexgo-ui-scale) */
+html.vexgo-mobile-active {
+  overflow: hidden !important;
+  width: 100%;
+  height: 100%;
+}
+
+html.vexgo-mobile-active body {
+  overflow: hidden !important;
+  touch-action: manipulation;
+  width: 100%;
+  height: 100%;
+}
+
+html.vexgo-mobile-active #app {
+  overflow: hidden;
+  height: 100%;
+}
+
+html.vexgo-mobile-active #master_wrapper {
+  transform-origin: top left;
+}
+
 @supports (padding: max(0px)) {
-  .topmenu {
+  html.vexgo-mobile-active .topmenu {
     padding-left: max(4px, env(safe-area-inset-left));
     padding-right: max(4px, env(safe-area-inset-right));
   }
-
-  #vexgo-eye-panel.vexgo-eye-panel--sheet {
-    bottom: max(8px, env(safe-area-inset-bottom));
-    left: max(8px, env(safe-area-inset-left));
-    right: max(8px, env(safe-area-inset-right));
-  }
 }
 
-/* Tablets & phones — touch-first */
+/* Floating install on phone when toolbar button is off-screen */
+#vexgo-install-fab {
+  display: none;
+  position: fixed;
+  z-index: 2147483640;
+  right: max(10px, env(safe-area-inset-right, 10px));
+  bottom: max(14px, env(safe-area-inset-bottom, 14px));
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  touch-action: manipulation;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+html.vexgo-mobile-active #vexgo-install-fab {
+  display: block;
+}
+
+
+/* BLE hint (iOS Safari) */
+#vexgo-ble-hint {
+  position: fixed;
+  z-index: 2147483645;
+  left: max(10px, env(safe-area-inset-left, 10px));
+  right: max(10px, env(safe-area-inset-right, 10px));
+  bottom: max(70px, calc(env(safe-area-inset-bottom, 10px) + 60px));
+  max-height: 50vh;
+  overflow-y: auto;
+  background: #fff;
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #1e293b;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+#vexgo-ble-hint strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #b45309;
+}
+
+#vexgo-ble-hint ul {
+  margin: 8px 0 12px;
+  padding-left: 18px;
+}
+
+#vexgo-ble-hint-close {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-weight: 700;
+  background: #0875e2;
+  color: #fff;
+  touch-action: manipulation;
+}
+
+/* Touch-first toolbar (no extra horizontal scroll when scaled) */
 @media (max-width: 1024px), (hover: none) and (pointer: coarse) {
   .topmenu {
-    height: auto;
     min-height: 44px;
     max-height: 52px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    touch-action: pan-x;
+    flex-wrap: nowrap;
+    overflow: visible;
   }
 
-  .topmenu::-webkit-scrollbar {
-    display: none;
-  }
-
-  .topmenu .toolbar_btn {
+  .topmenu .toolbar_btn,
+  .brain_button.toolbar_btn {
     min-width: 44px;
     min-height: 44px;
     flex-shrink: 0;
     touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.15);
   }
 
   .topmenu .icon_wrapper .icon_caption {
-    font-size: 0.65em;
-    line-height: 1.1;
+    font-size: 0.62em;
+    line-height: 1.05;
   }
 
   .project_name_wrapper .project_name_ticker {
-    width: min(100px, 22vw);
-    max-width: 120px;
+    width: min(88px, 20vw);
+    max-width: 100px;
   }
 
   button.vcj.program_control_btn {
     min-width: 44px;
     min-height: 44px;
-    padding: 6px;
-  }
-
-  /* Code / Drive bar */
-  .tabbed_container[data-style=default] .tabbed_header {
-    height: auto;
-    min-height: 48px;
-    flex-wrap: nowrap;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  .tabbed_container[data-style=default] .tab_btn {
-    margin: 6px 2px 0;
-    padding: 8px 10px;
-    min-height: 44px;
-    flex-shrink: 0;
     touch-action: manipulation;
   }
 
-  .tabbed_container[data-style=default] .tab_btn img {
-    width: 24px;
+  .tabbed_container[data-style='default'] .tabbed_header {
+    height: auto;
+    min-height: 46px;
+    overflow: visible;
   }
 
-  .tabbed_container[data-style=default] .tab_btn .name {
-    font-size: 13px;
-    margin: 0 4px;
+  .tabbed_container[data-style='default'] .tab_btn {
+    min-height: 44px;
+    touch-action: manipulation;
+    flex-shrink: 0;
   }
 
-  /* Monitor, Config, Help, LED Bumper, Eye — horizontal scroll if crowded */
   .tabbed_header #side_panel_controls,
   #side_panel_controls.active,
   #side_panel_controls {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     min-width: 0;
-    max-width: min(58vw, 420px);
-    justify-content: flex-end;
+    max-width: none;
+    overflow: visible;
     align-items: center !important;
-    align-content: center;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: visible;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    touch-action: pan-x;
-    gap: 0;
-  }
-
-  #side_panel_controls::-webkit-scrollbar {
-    display: none;
+    touch-action: manipulation;
   }
 
   .side_panel_btn,
   #vexgo-bumper-dot.vexgo-bumper-dot,
   #vexgo-eye-toggle.side_panel_btn {
-    flex-shrink: 0;
-    min-width: 44px;
+    min-width: 40px;
     min-height: 44px;
-    padding: 6px 5px !important;
-    box-sizing: border-box !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     touch-action: manipulation;
   }
 
-  #vexgo-bumper-dot .vexgo-bumper-icon {
-    height: 1.75em;
-    max-height: 28px;
-  }
-
-  #vexgo-bumper-dot .vexgo-bumper-svg {
-    max-height: 28px;
-  }
-
-  #vexgo-bumper-dot .vexgo-bumper-label {
-    font-size: 6px;
-    bottom: 3px;
-  }
-
-  #vexgo-eye-toggle img {
-    width: 26px;
-    height: 26px;
-  }
-
-  /* Blockly: narrower category strip → more canvas on phones */
   #blocklyDiv .injectionDiv .blocklyToolboxDiv.blocklyToolboxLarge .scratchCategoryMenu {
-    width: 58px;
-    font-size: 0.72rem;
+    width: 54px;
+    font-size: 0.68rem;
   }
 
-  #blocklyDiv .injectionDiv .blocklyToolboxDiv {
-    height: calc(100% - 44px) !important;
+  html.vexgo-mobile-active #brain_info,
+  html.vexgo-mobile-active #brain_info_dropdown.active #brain_info,
+  html.vexgo-mobile-active .dropdownmenu_options.active #brain_info {
+    box-sizing: border-box;
   }
 
-  #blocklyDiv .injectionDiv .blocklyToolboxDiv.blocklyToolboxLarge {
-    height: calc(100% - 52px) !important;
+  html.vexgo-mobile-active #brain_info .action_btn,
+  html.vexgo-mobile-active .connect_btn_brain_info .action_btn {
+    min-height: 48px;
+    font-size: 15px;
+    touch-action: manipulation;
   }
 
-  #brain_info.vexgo-classroom-expanded {
-    width: min(100vw - 16px, 440px);
-    max-height: min(80vh, 640px);
+  .dropdownmenu_portal {
+    pointer-events: none;
+  }
+
+  .dropdownmenu_options.active {
+    pointer-events: auto !important;
+    z-index: 2147482000;
+  }
+
+  .dropdownmenu_options.active .option {
+    min-height: 44px;
+    touch-action: manipulation;
   }
 }
 
-/* Phones & landscape (iPhone Safari bar) */
 @media (max-width: 640px), (max-height: 480px) and (orientation: landscape) {
-  .topmenu {
-    min-height: 40px;
-    max-height: 46px;
-    font-size: 0.8em;
-  }
-
   .topmenu .toolbar_btn.tool_tutorial .icon_caption,
   .topmenu .toolbar_btn.tool_activity .icon_caption,
   .topmenu .toolbar_btn.tool_learn .icon_caption {
     display: none;
   }
 
-  .project_name_wrapper .project_name_ticker {
-    width: min(72px, 18vw);
-  }
-
-  .tabbed_container[data-style=default] .tabbed_header {
-    min-height: 44px;
-  }
-
-  .tabbed_container[data-style=default] .tab_btn {
-    padding: 6px 8px;
-    min-height: 40px;
-  }
-
-  .tabbed_header #side_panel_controls,
-  #side_panel_controls {
-    max-width: min(65vw, 320px);
-  }
-
-  #blocklyDiv .injectionDiv .blocklyToolboxDiv.blocklyToolboxLarge .scratchCategoryMenu {
-    width: 52px;
-    font-size: 0.62rem;
-    line-height: 1.15;
-  }
-}
-
-/* Portrait phone — hide Code/Drive text, icons only */
-@media (max-width: 480px) and (orientation: portrait) {
-  .tabbed_container[data-style=default] .tab_btn .name {
+  .tabbed_container[data-style='default'] .tab_btn .name {
     display: none;
   }
 
-  .tabbed_container[data-style=default] .tab_btn {
-    padding: 8px 12px;
+  #blocklyDiv .injectionDiv .blocklyToolboxDiv.blocklyToolboxLarge .scratchCategoryMenu {
+    width: 46px;
+    font-size: 0.6rem;
   }
 }
 
-/* Eye panel — bottom sheet on narrow screens */
 @media (max-width: 768px), (max-height: 520px) {
   #vexgo-eye-panel {
     width: auto !important;
     left: 8px !important;
     right: 8px !important;
     top: auto !important;
-    bottom: max(8px, env(safe-area-inset-bottom, 8px));
-    max-height: min(55vh, 320px);
-    border-radius: 12px 12px 10px 10px;
-  }
-
-  #vexgo-eye-panel .vexgo-eye-panel-head strong {
-    font-size: 15px;
+    bottom: max(72px, calc(env(safe-area-inset-bottom, 8px) + 64px));
+    max-height: min(50vh, 300px);
   }
 
   #vexgo-eye-panel #vexgo-eye-close {

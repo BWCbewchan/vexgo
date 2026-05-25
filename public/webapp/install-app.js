@@ -12,6 +12,14 @@
     '<path fill="currentColor" d="M17 1.01 7 1c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM12 17l-4-4 1.41-1.41L11 13.17V7h2v6.17l1.59-1.58L16 13l-4 4z"/></svg>';
 
   function uaInfo() {
+    var real = window.__VEXGO_REAL_DEVICE__;
+    if (real && (real.ios || real.android)) {
+      return {
+        ios: !!real.ios,
+        android: !!real.android,
+        desktop: !real.ios && !real.android,
+      };
+    }
     var ua = navigator.userAgent || '';
     var ios =
       /iPad|iPhone|iPod/i.test(ua) ||
@@ -37,6 +45,8 @@
         btn.setAttribute('aria-hidden', 'true');
         btn.tabIndex = -1;
       });
+    var fab = document.getElementById('vexgo-install-fab');
+    if (fab) fab.style.display = 'none';
   }
 
   function applyToolbarInstallVisibility() {
@@ -158,11 +168,14 @@
 
     if (info.ios) {
       openOverlay(
-        '<p>Trên <strong>iPad / iPhone</strong>: thêm vào Màn hình chính (Web App) — <strong>không</strong> qua App Store.</p>' +
-          '<ol><li>Mở trang này bằng <strong>Safari</strong> (khuyến nghị) hoặc Chrome.</li>' +
-          '<li>Bấm nút <strong>Chia sẻ</strong> (hình vuông có mũi tên).</li>' +
-          '<li>Chọn <strong>Thêm vào Màn hình chính</strong> / <strong>Add to Home Screen</strong>.</li>' +
-          '<li>Bấm <strong>Thêm</strong> — mở app từ icon trên màn hình.</li></ol>',
+        '<p>Trên <strong>iPad / iPhone</strong>: cài Web App từ <strong>Safari</strong> (không qua App Store).</p>' +
+          '<ol>' +
+          '<li>Mở đúng địa chỉ trang trong <strong>Safari</strong> (không dùng cửa sổ nhúng trong app khác).</li>' +
+          '<li>Bấm nút <strong>Chia sẻ</strong> <span aria-hidden="true">⬆️</span> (dưới hoặc trên thanh Safari).</li>' +
+          '<li>Vuốt xuống → <strong>Thêm vào Màn hình chính</strong> / <strong>Add to Home Screen</strong>.</li>' +
+          '<li>Bấm <strong>Thêm</strong>, rồi mở <strong>VEX GO</strong> từ icon trên màn hình chính.</li>' +
+          '</ol>' +
+          '<p><strong>Lưu ý:</strong> Kết nối Brain qua Bluetooth trên iPhone cần trình duyệt <strong>Bluefy</strong> hoặc app VEXcode GO chính thức — Safari thường không kết nối được robot.</p>',
         'Đóng',
         closeOverlay
       );

@@ -1,6 +1,7 @@
 /**
- * Unblock VEXcode GO web on tablets, Safari, Bluefy, Firefox, etc.
- * Must run before dist/main.bundle.js (platformInfo is evaluated at load time).
+ * Unblock VEXcode GO web on tablets / phones.
+ * Android: keep real UA so Web Bluetooth + install work.
+ * iOS/iPad: light spoof (Chrome desktop UA) to bypass unsupported modal; keep real touch points.
  */
 (function () {
   'use strict';
@@ -14,6 +15,31 @@
   if (params && params.get('vexgo-mobile') === '0') {
     return;
   }
+
+  var REAL_UA = navigator.userAgent || '';
+  var REAL_PLATFORM = navigator.platform || '';
+  var REAL_MAX_TOUCH = navigator.maxTouchPoints || 0;
+
+  function isRealIOS() {
+    return (
+      /iPad|iPhone|iPod/i.test(REAL_UA) ||
+      /iPad|iPhone|iPod/i.test(REAL_PLATFORM) ||
+      (REAL_UA.indexOf('Mac') !== -1 && REAL_MAX_TOUCH > 1)
+    );
+  }
+
+  function isRealAndroid() {
+    return /Android/i.test(REAL_UA);
+  }
+
+  window.__VEXGO_REAL_DEVICE__ = {
+    userAgent: REAL_UA,
+    platform: REAL_PLATFORM,
+    maxTouchPoints: REAL_MAX_TOUCH,
+    ios: isRealIOS(),
+    android: isRealAndroid(),
+    mobile: isRealIOS() || isRealAndroid() || REAL_MAX_TOUCH > 0,
+  };
 
   var DESKTOP_CHROME_UA =
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
@@ -55,13 +81,12 @@
     }
   }
 
+  /** Only spoof on iOS/iPad/Safari — not Android (needs real UA for BLE + PWA). */
   function shouldSpoofNavigator() {
-    var ua = (navigator.userAgent || '').toLowerCase();
-    var isIOS =
-      /ipad|iphone|ipod/i.test(navigator.platform || '') ||
-      (ua.indexOf('mac') !== -1 && navigator.maxTouchPoints > 1);
-    var isAndroid = ua.indexOf('android') !== -1;
-    var isTouch = navigator.maxTouchPoints > 0;
+    if (isRealAndroid()) return false;
+
+    var ua = REAL_UA.toLowerCase();
+    var isIOS = isRealIOS();
     var isSafari = ua.indexOf('safari') !== -1 && ua.indexOf('chrome') === -1;
     var isFirefox = ua.indexOf('firefox') !== -1;
     var hasRealDesktopChrome =
@@ -69,10 +94,9 @@
       !!window.chrome &&
       !!window.chrome.runtime &&
       !isIOS &&
-      !isAndroid &&
-      !isTouch;
+      !isRealAndroid();
 
-    return !hasRealDesktopChrome || isIOS || isAndroid || isTouch || isSafari || isFirefox;
+    return isIOS || isSafari || isFirefox || (!hasRealDesktopChrome && REAL_MAX_TOUCH > 0);
   }
 
   ensureChromeObject();
@@ -81,7 +105,11 @@
     defineNavProp('userAgent', DESKTOP_CHROME_UA);
     defineNavProp('appVersion', '5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36');
     defineNavProp('platform', 'MacIntel');
-    defineNavProp('maxTouchPoints', 0);
+    if (REAL_MAX_TOUCH > 0) {
+      defineNavProp('maxTouchPoints', REAL_MAX_TOUCH);
+    } else {
+      defineNavProp('maxTouchPoints', 0);
+    }
     defineNavProp('vendor', 'Google Inc.');
   }
 
@@ -118,15 +146,6 @@
           btn.click();
         } catch (e) {}
       }
-    });
-
-    document.querySelectorAll('body *').forEach(function (el) {
-      if (el.children.length > 8) return;
-      if (!textBlocked(el.innerText)) return;
-      if (!el.className || String(el.className).indexOf('alert') === -1) {
-        if (!el.closest || !el.closest('.alert_window_2, [class*="lightbox"]')) return;
-      }
-      el.style.setProperty('display', 'none', 'important');
     });
   }
 

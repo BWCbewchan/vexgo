@@ -117,6 +117,11 @@
       eyePanel.src = 'eye-sensor-panel.js';
       eyePanel.defer = true;
       document.body.appendChild(eyePanel);
+
+      var mobileTouch = document.createElement('script');
+      mobileTouch.src = 'vexgo-mobile-touch.js';
+      mobileTouch.defer = true;
+      document.body.appendChild(mobileTouch);
     });
   }
 
