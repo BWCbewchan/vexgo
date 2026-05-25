@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Duplicate VEXcode copies (canonical app lives in public/webapp only)
+public/public/
+assets/
+
+# Env / secrets
+.env
+.env*.local
+
+# Logs / debug
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
+
+# Local scratch scripts (Playwright probes, etc.)
+scratch/
+
+# Android packages (GitHub limit 100MB per file)
+*.apk
+*.xapk

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <base href="./" />
+
+        <link rel="icon" href="./static/img/icons/vexfavicon.ico" type="image/x-icon" />
+
+        <!-- Lock UI language to English before VEXcode boots -->
+        <script>
+            (function () {
+                try {
+                    var origNavigator = window.navigator;
+                    var navProxy = new Proxy(origNavigator, {
+                        get: function (target, prop) {
+                            if (prop === 'language') return 'en';
+                            if (prop === 'languages') return ['en', 'en-US'];
+                            var val = target[prop];
+                            return typeof val === 'function' ? val.bind(target) : val;
+                        },
+                    });
+                    Object.defineProperty(window, 'navigator', {
+                        get: function () {
+                            return navProxy;
+                        },
+                        configurable: true,
+                    });
+                } catch (e) {
+                    try {
+                        Object.defineProperty(navigator, 'language', {
+                            get: function () {
+                                return 'en';
+                            },
+                            configurable: true,
+                        });
+                        Object.defineProperty(navigator, 'languages', {
+                            get: function () {
+                                return ['en', 'en-US'];
+                            },
+                            configurable: true,
+                        });
+                    } catch (e2) {}
+                }
+                try {
+                    localStorage.setItem('selectedLanguage', 'en');
+                    localStorage.setItem('SelectedLanguage', 'en');
+                    localStorage.setItem('language', 'en');
+                    localStorage.setItem('i18nextLng', 'en');
+                    localStorage.setItem('lng', 'en');
+                    localStorage.setItem('locale', 'en');
+                    localStorage.setItem('expandLogicCategory', 'enabled');
+                } catch (e) {}
+            })();
+        </script>
+
+        <link
+            href="./static/fonts/NotoSans-Regular.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin="anonymous"
+        />
+        <link href="./fonts/roboto.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+        <link
+            href="./static/fonts/NotoSans-Bold.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin="anonymous"
+        />
+        <link
+            href="./static/fonts/MesloLGS-Regular.ttf"
+            as="font"
+            type="font/ttf"
+            crossorigin="anonymous"
+        />
+
+        <link href="./dist/static/css/ui.css" rel="stylesheet" />
+        <link href="style/global.css" rel="stylesheet" />
+        <link href="theme-toggle.css" rel="stylesheet" />
+        <link href="style/PrismStyles/prism-vex-py.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div id="app"></div>
+
+        <!-- Blockly, React, and main.bundle.js are loaded by boot.js (skipped in Cursor preview) -->
+        <script src="boot.js"></script>
+
+        <input id="NWSAVEAS" type="file" nwsaveas style="display: none" accept />
+        <input id="NWOPEN" type="file" style="display: none" accept />
+    </body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "git.autoRepositoryDetection": "openEditors",
+  "git.repositoryScanMaxDepth": 2,
+  "git.ignoreLimitWarning": true,
+  "typescript.tsserver.maxTsServerMemory": 512,
+  "files.watcherExclude": {
+    "**/public/webapp/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/out/**": true,
+    "**/public/public/**": true,
+    "**/assets/**": true,
+    "**/public/webapp/dist/**/*.map": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/out": true,
+    "**/public/public": true,
+    "**/assets": true,
+    "**/public/webapp/dist": true
+  }
+}

@@ -1,0 +1,89 @@
+/* Theme switch embedded in VEXcode topmenu (next to Tools) */
+#vexgo-theme-toggle {
+  display: none;
+  align-items: center;
+  align-self: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 8px;
+  margin: 0 2px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.12);
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 0.83em;
+  color: #fff;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+#vexgo-theme-toggle.is-visible {
+  display: flex;
+}
+
+#vexgo-theme-toggle .vexgo-theme-caption {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+#vexgo-theme-toggle .vexgo-theme-option {
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.65);
+  font: inherit;
+  font-weight: 600;
+  padding: 4px 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+#vexgo-theme-toggle .vexgo-theme-option:hover {
+  color: #fff;
+}
+
+#vexgo-theme-toggle .vexgo-theme-option.is-active {
+  color: #fff;
+}
+
+#vexgo-theme-toggle .vexgo-theme-track {
+  position: relative;
+  width: 38px;
+  height: 20px;
+  border: 0;
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+#vexgo-theme-toggle .vexgo-theme-track:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+#vexgo-theme-toggle .vexgo-theme-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+#vexgo-theme-toggle.is-classic .vexgo-theme-knob {
+  transform: translateX(18px);
+}
+
+#vexgo-theme-toggle.is-classic .vexgo-theme-option[data-theme='OLD_THEME'] {
+  color: #fff;
+}
+
+#vexgo-theme-toggle:not(.is-classic) .vexgo-theme-option[data-theme='VEXCode'] {
+  color: #fff;
+}
