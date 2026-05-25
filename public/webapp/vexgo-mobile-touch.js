@@ -4,15 +4,20 @@
 (function () {
   'use strict';
 
-  function realDevice() {
-    return window.__VEXGO_REAL_DEVICE__ || {};
-  }
-
   function isCoarsePointer() {
+    if (window.VEXGOPlatform) {
+      var p = window.VEXGOPlatform.get();
+      return p.mobile || p.tablet || p.coarse;
+    }
     try {
       if (window.matchMedia('(pointer: coarse)').matches) return true;
     } catch (e) {}
-    return realDevice().mobile || navigator.maxTouchPoints > 0;
+    var d = window.__VEXGO_REAL_DEVICE__ || {};
+    return d.mobile || navigator.maxTouchPoints > 0;
+  }
+
+  function realDevice() {
+    return window.__VEXGO_REAL_DEVICE__ || {};
   }
 
   function findBrainButton() {
@@ -116,8 +121,9 @@
   }
 
   function showBleHintIfNeeded() {
+    if (window.VEXGOPlatform && window.VEXGOPlatform.hasWebBle()) return;
     var d = realDevice();
-    if (!d.ios) return;
+    if (!d.ios && !(window.VEXGOPlatform && window.VEXGOPlatform.get().mac)) return;
     if (navigator.bluetooth) return;
 
     document.addEventListener(
@@ -137,13 +143,17 @@
         var hint = document.createElement('div');
         hint.id = 'vexgo-ble-hint';
         hint.setAttribute('role', 'alert');
+        var isMac = window.VEXGOPlatform && window.VEXGOPlatform.get().mac;
         hint.innerHTML =
-          '<strong>Kết nối Brain trên iPhone/iPad</strong>' +
-          '<p>Safari <em>không</em> hỗ trợ Bluetooth cho VEX GO web. Dùng một trong các cách sau:</p>' +
+          '<strong>' +
+          (isMac ? 'Kết nối Brain trên Mac (Safari)' : 'Kết nối Brain trên iPhone/iPad') +
+          '</strong>' +
+          '<p>Trình duyệt này <em>không</em> hỗ trợ Bluetooth cho VEX GO web.</p>' +
           '<ul>' +
-          '<li><strong>Android + Chrome</strong> — bấm Connect Brain bình thường.</li>' +
-          '<li><strong>iOS:</strong> cài app trình duyệt <strong>Bluefy</strong> (hỗ trợ Web Bluetooth), mở lại trang này trong Bluefy.</li>' +
-          '<li>Hoặc dùng app <strong>VEXcode GO</strong> chính thức từ App Store để kết nối robot.</li>' +
+          (isMac
+            ? '<li>Mở cùng link bằng <strong>Chrome</strong> hoặc <strong>Edge</strong> trên Mac.</li>'
+            : '<li><strong>Android + Chrome</strong> — Connect Brain trực tiếp.</li>') +
+          '<li>App <strong>VEXcode GO</strong> chính thức (App Store / CH Play).</li>' +
           '</ul>' +
           '<button type="button" id="vexgo-ble-hint-close">Đóng</button>';
         document.body.appendChild(hint);

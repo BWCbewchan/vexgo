@@ -16,30 +16,21 @@
     return;
   }
 
-  var REAL_UA = navigator.userAgent || '';
-  var REAL_PLATFORM = navigator.platform || '';
-  var REAL_MAX_TOUCH = navigator.maxTouchPoints || 0;
-
   function isRealIOS() {
+    var d = window.__VEXGO_REAL_DEVICE__;
+    if (d && d.ios !== undefined) return d.ios;
+    var ua = navigator.userAgent || '';
     return (
-      /iPad|iPhone|iPod/i.test(REAL_UA) ||
-      /iPad|iPhone|iPod/i.test(REAL_PLATFORM) ||
-      (REAL_UA.indexOf('Mac') !== -1 && REAL_MAX_TOUCH > 1)
+      /iPad|iPhone|iPod/i.test(ua) ||
+      (ua.indexOf('Mac') !== -1 && navigator.maxTouchPoints > 1)
     );
   }
 
   function isRealAndroid() {
-    return /Android/i.test(REAL_UA);
+    var d = window.__VEXGO_REAL_DEVICE__;
+    if (d && d.android !== undefined) return d.android;
+    return /Android/i.test(navigator.userAgent || '');
   }
-
-  window.__VEXGO_REAL_DEVICE__ = {
-    userAgent: REAL_UA,
-    platform: REAL_PLATFORM,
-    maxTouchPoints: REAL_MAX_TOUCH,
-    ios: isRealIOS(),
-    android: isRealAndroid(),
-    mobile: isRealIOS() || isRealAndroid() || REAL_MAX_TOUCH > 0,
-  };
 
   var DESKTOP_CHROME_UA =
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
@@ -85,7 +76,12 @@
   function shouldSpoofNavigator() {
     if (isRealAndroid()) return false;
 
-    var ua = REAL_UA.toLowerCase();
+    var realUa = (window.__VEXGO_REAL_DEVICE__ && window.__VEXGO_REAL_DEVICE__.userAgent) || navigator.userAgent || '';
+    var realTouch =
+      (window.__VEXGO_REAL_DEVICE__ && window.__VEXGO_REAL_DEVICE__.maxTouchPoints) ||
+      navigator.maxTouchPoints ||
+      0;
+    var ua = realUa.toLowerCase();
     var isIOS = isRealIOS();
     var isSafari = ua.indexOf('safari') !== -1 && ua.indexOf('chrome') === -1;
     var isFirefox = ua.indexOf('firefox') !== -1;
@@ -96,7 +92,7 @@
       !isIOS &&
       !isRealAndroid();
 
-    return isIOS || isSafari || isFirefox || (!hasRealDesktopChrome && REAL_MAX_TOUCH > 0);
+    return isIOS || isSafari || isFirefox || (!hasRealDesktopChrome && realTouch > 0);
   }
 
   ensureChromeObject();
@@ -105,8 +101,12 @@
     defineNavProp('userAgent', DESKTOP_CHROME_UA);
     defineNavProp('appVersion', '5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36');
     defineNavProp('platform', 'MacIntel');
-    if (REAL_MAX_TOUCH > 0) {
-      defineNavProp('maxTouchPoints', REAL_MAX_TOUCH);
+    var realTouch =
+      (window.__VEXGO_REAL_DEVICE__ && window.__VEXGO_REAL_DEVICE__.maxTouchPoints) ||
+      navigator.maxTouchPoints ||
+      0;
+    if (realTouch > 0) {
+      defineNavProp('maxTouchPoints', realTouch);
     } else {
       defineNavProp('maxTouchPoints', 0);
     }
@@ -182,6 +182,10 @@
     watchBlocks();
     if (ticks >= 24) clearInterval(poll);
   }, 2000);
+
+  if (window.VEXGOPlatform && window.VEXGOPlatform.refresh) {
+    window.VEXGOPlatform.refresh();
+  }
 
   window.__VEXGO_MOBILE_WEB_ENABLED__ = true;
 })();

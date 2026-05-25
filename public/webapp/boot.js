@@ -71,7 +71,6 @@
   }
 
   var scripts = [
-    'mobile-enable.js',
     'lib/@vexcode/blockly/blockly_compressed.js',
     'lib/@vexcode/blockly/blocks_compressed.js',
     'lib/@vexcode/blockly/cpp_compressed.js',
@@ -122,6 +121,11 @@
       mobileTouch.src = 'vexgo-mobile-touch.js';
       mobileTouch.defer = true;
       document.body.appendChild(mobileTouch);
+
+      var platformUi = document.createElement('script');
+      platformUi.src = 'vexgo-platform-ui.js';
+      platformUi.defer = true;
+      document.body.appendChild(platformUi);
     });
   }
 

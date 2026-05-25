@@ -558,6 +558,11 @@
       if (typeof webapp === 'undefined' || !webapp.goController) return;
       started = true;
       clearInterval(wait);
+      var intervalMs = 700;
+      if (window.VEXGOPlatform) {
+        var pg = window.VEXGOPlatform.get();
+        if (pg && (pg.mobile || pg.tablet)) intervalMs = 1100;
+      }
       setInterval(function () {
         var eyePanel = document.getElementById('vexgo-eye-panel');
         var classBody = document.getElementById('vexgo-classroom-body');
@@ -567,7 +572,7 @@
         try {
           document.dispatchEvent(new CustomEvent('vexgo-go-status'));
         } catch (e) {}
-      }, 700);
+      }, intervalMs);
     }, 400);
   }
 

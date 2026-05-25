@@ -233,3 +233,131 @@ html.vexgo-mobile-active #vexgo-install-fab {
   padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
     max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
 }
+
+/* ── Platform banner (iOS / Mac Safari / Android install) ── */
+#vexgo-platform-banner {
+  position: fixed;
+  z-index: 2147483643;
+  left: max(8px, env(safe-area-inset-left, 8px));
+  right: max(8px, env(safe-area-inset-right, 8px));
+  top: max(6px, env(safe-area-inset-top, 6px));
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  pointer-events: auto;
+}
+
+html.vexgo-mobile-active #vexgo-platform-banner {
+  top: max(4px, env(safe-area-inset-top, 4px));
+}
+
+.vexgo-platform-banner-inner {
+  position: relative;
+  background: linear-gradient(135deg, #0c4a6e 0%, #0875e2 100%);
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 14px 12px 12px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
+  max-height: min(42vh, 280px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.vexgo-platform-banner--ios .vexgo-platform-banner-inner {
+  background: linear-gradient(135deg, #7c2d12 0%, #c2410c 100%);
+}
+
+.vexgo-platform-banner--mac-safari .vexgo-platform-banner-inner {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+}
+
+.vexgo-platform-banner-content {
+  font-size: 12px;
+  line-height: 1.45;
+  padding-right: 28px;
+}
+
+.vexgo-platform-banner-content strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.vexgo-platform-banner-content ul {
+  margin: 6px 0 8px;
+  padding-left: 18px;
+}
+
+.vexgo-platform-banner-sub {
+  opacity: 0.92;
+  font-size: 11px;
+  margin: 0;
+}
+
+.vexgo-platform-banner-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.vexgo-platform-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.vexgo-platform-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.vexgo-platform-btn-primary {
+  background: #fff;
+  color: #0c4a6e;
+}
+
+html.vexgo-platform-standalone #vexgo-install-fab {
+  display: none !important;
+}
+
+/* iPad: slightly wider toolbox labels */
+html.vexgo-platform-tablet:not(.vexgo-mobile-active) .tabbed_container[data-style='default'] .tab_btn .name {
+  font-size: 12px;
+}
+
+/* Mac narrow window */
+html.vexgo-platform-mac.vexgo-mobile-active .topmenu {
+  max-height: 48px;
+}
+
+/* Performance: less shadow work on mobile */
+@media (prefers-reduced-motion: reduce) {
+  .tabbed_container[data-style='default'] .tabbed_body {
+    transition: none !important;
+  }
+}
+
+html.vexgo-platform-mobile #brain_info .vexgo-classroom-embed,
+html.vexgo-platform-mobile #vexgo-eye-panel {
+  -webkit-overflow-scrolling: touch;
+}
+
+html.vexgo-ble-unavailable .brain_button.toolbar_btn {
+  touch-action: manipulation;
+}
