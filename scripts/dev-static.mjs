@@ -13,6 +13,8 @@ const PORT = Number(process.env.PORT) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 const REWRITES = [
+  ['/webapp/node_modules/@vexcode/', '/webapp/lib/@vexcode/'],
+  ['/node_modules/@vexcode/', '/webapp/lib/@vexcode/'],
   ['/static/', '/webapp/static/'],
   ['/dist/', '/webapp/dist/'],
   ['/lib/', '/webapp/lib/'],

@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node scripts/dev-static.mjs",
-    "dev:next": "node scripts/dev-next.mjs",
-    "dev:static": "node scripts/dev-static.mjs",
+    "dev": "node scripts/sync-blockly-media.mjs && node scripts/dev-static.mjs",
+    "dev:next": "node scripts/sync-blockly-media.mjs && node scripts/dev-next.mjs",
+    "dev:static": "node scripts/sync-blockly-media.mjs && node scripts/dev-static.mjs",
+    "prebuild": "node scripts/sync-blockly-media.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

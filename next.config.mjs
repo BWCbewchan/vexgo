@@ -81,6 +81,15 @@ const nextConfig = {
         source: '/fonts/:path*',
         destination: '/webapp/fonts/:path*',
       },
+      // Bundle hardcodes node_modules/@vexcode/blockly/media/ — assets live under lib/
+      {
+        source: '/node_modules/@vexcode/:path*',
+        destination: '/webapp/lib/@vexcode/:path*',
+      },
+      {
+        source: '/webapp/node_modules/@vexcode/:path*',
+        destination: '/webapp/lib/@vexcode/:path*',
+      },
     ];
   },
 };

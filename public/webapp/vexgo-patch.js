@@ -9,6 +9,59 @@
   var THEME_CLASSIC = 'OLD_THEME';
   var STORAGE_KEY = 'selectedTheme';
 
+  var BLOCKLY_MEDIA = 'lib/@vexcode/blockly/media/';
+  var LEGACY_BLOCKLY_MEDIA = 'node_modules/@vexcode/blockly/media/';
+
+  /** Fix zoom/toolbox SVG and audio paths after deploy (bundle uses node_modules/). */
+  function patchBlocklyMediaPaths() {
+    function rewriteMediaUrl(url) {
+      if (!url || url.indexOf(LEGACY_BLOCKLY_MEDIA) === -1) return url;
+      return url.split(LEGACY_BLOCKLY_MEDIA).join(BLOCKLY_MEDIA);
+    }
+
+    function fixSvgImages(root) {
+      if (!root || !root.querySelectorAll) return;
+      root.querySelectorAll('image').forEach(function (img) {
+        ['href', 'xlink:href'].forEach(function (attr) {
+          var val = img.getAttribute(attr);
+          if (!val) return;
+          var next = rewriteMediaUrl(val);
+          if (next !== val) img.setAttribute(attr, next);
+        });
+      });
+    }
+
+    function applyWorkspaceMediaPath() {
+      try {
+        var Blockly = window.Blockly;
+        if (!Blockly || typeof Blockly.getMainWorkspace !== 'function') return;
+        var ws = Blockly.getMainWorkspace();
+        if (ws && ws.options && ws.options.pathToMedia !== BLOCKLY_MEDIA) {
+          ws.options.pathToMedia = BLOCKLY_MEDIA;
+        }
+      } catch (e) {}
+    }
+
+    fixSvgImages(document);
+    applyWorkspaceMediaPath();
+
+    if (typeof MutationObserver !== 'undefined') {
+      var observer = new MutationObserver(function () {
+        fixSvgImages(document);
+        applyWorkspaceMediaPath();
+      });
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+    }
+
+    var ticks = 0;
+    var timer = setInterval(function () {
+      ticks += 1;
+      fixSvgImages(document);
+      applyWorkspaceMediaPath();
+      if (ticks >= 80) clearInterval(timer);
+    }, 200);
+  }
+
   function setEnglishPrefs() {
     try {
       localStorage.setItem('selectedLanguage', 'en');
@@ -344,6 +397,7 @@
   }
 
   setEnglishPrefs();
+  patchBlocklyMediaPaths();
   patchFetch();
   forceExpandLogicCategories();
   watchSettingsMenuItems();
