@@ -18,7 +18,10 @@
 
   function minScale() {
     var p = window.VEXGOPlatform && window.VEXGOPlatform.get();
-    if (p && p.tablet && window.innerWidth > 700) return MIN_SCALE_TABLET;
+    var w = window.innerWidth;
+    if (p && p.android && w >= 900) return 0.72;
+    if (p && p.tablet && w > 700) return MIN_SCALE_TABLET;
+    if (p && p.android && w >= 600) return MIN_SCALE_TABLET;
     return MIN_SCALE_PHONE;
   }
 

@@ -9,11 +9,22 @@
   var MAX_TOUCH = navigator.maxTouchPoints || 0;
 
   function detect() {
-    var ios =
-      /iPad|iPhone|iPod/i.test(UA) ||
-      /iPad|iPhone|iPod/i.test(PLATFORM) ||
-      (UA.indexOf('Mac') !== -1 && MAX_TOUCH > 1);
-    var android = /Android/i.test(UA);
+    var real = window.__VEXGO_REAL_DEVICE__;
+    var ios;
+    if (real && real.ios !== undefined) {
+      ios = real.ios;
+    } else {
+      ios =
+        /iPad|iPhone|iPod/i.test(UA) ||
+        /iPad|iPhone|iPod/i.test(PLATFORM) ||
+        (UA.indexOf('Mac') !== -1 && MAX_TOUCH > 1);
+    }
+    var android;
+    if (real && real.android !== undefined) {
+      android = real.android;
+    } else {
+      android = /Android/i.test(UA);
+    }
     var mac =
       !ios &&
       !android &&
@@ -24,9 +35,18 @@
       coarse = window.matchMedia('(pointer: coarse)').matches;
     } catch (e) {}
     var narrow = window.innerWidth <= 1024;
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    var androidTablet = android && w >= 600;
+    var androidPhone = android && w < 600;
     var phone =
-      ios || android || (coarse && narrow) || window.innerWidth <= 640;
-    var tablet = ios && window.innerWidth > 640;
+      ios && w <= 640 ||
+      androidPhone ||
+      (!android && !ios && coarse && narrow && w <= 640);
+    var tablet =
+      (ios && w > 640) ||
+      androidTablet ||
+      (!android && !ios && coarse && w > 640 && w <= 1366);
     var standalone = false;
     try {
       standalone =
@@ -56,16 +76,18 @@
 
   var state = detect();
 
-  window.__VEXGO_REAL_DEVICE__ = {
-    userAgent: state.ua,
-    platform: state.platform,
-    maxTouchPoints: state.maxTouchPoints,
-    ios: state.ios,
-    android: state.android,
-    mac: state.mac,
-    mobile: state.mobile,
-    tablet: state.tablet,
-  };
+  if (!window.__VEXGO_REAL_DEVICE__) {
+    window.__VEXGO_REAL_DEVICE__ = {
+      userAgent: state.ua,
+      platform: state.platform,
+      maxTouchPoints: state.maxTouchPoints,
+      ios: state.ios,
+      android: state.android,
+      mac: state.mac,
+      mobile: state.mobile,
+      tablet: state.tablet,
+    };
+  }
 
   function hasWebBle() {
     try {
@@ -118,16 +140,6 @@
 
   function refresh() {
     state = detect();
-    window.__VEXGO_REAL_DEVICE__ = {
-      userAgent: state.ua,
-      platform: state.platform,
-      maxTouchPoints: state.maxTouchPoints,
-      ios: state.ios,
-      android: state.android,
-      mac: state.mac,
-      mobile: state.mobile,
-      tablet: state.tablet,
-    };
     applyDocumentClasses();
     return state;
   }
@@ -151,12 +163,19 @@
     isMobileLayout: function () {
       return state.mobile || state.tablet || window.innerWidth <= 900;
     },
+    isAndroidTablet: function () {
+      return state.android && window.innerWidth >= 600;
+    },
     shouldUiFit: function () {
+      var w = window.innerWidth;
+      var h = window.innerHeight;
       return (
         state.mobile ||
-        (state.tablet && window.innerWidth <= 1100) ||
-        window.innerWidth <= 768 ||
-        (window.innerHeight <= 520 && window.innerWidth <= 980)
+        state.tablet ||
+        (state.android && w >= 600) ||
+        w <= 768 ||
+        (h <= 520 && w <= 980) ||
+        (h <= 600 && w <= 1100)
       );
     },
   };

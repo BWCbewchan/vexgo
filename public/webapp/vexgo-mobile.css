@@ -336,9 +336,47 @@ html.vexgo-platform-standalone #vexgo-install-fab {
   display: none !important;
 }
 
-/* iPad: slightly wider toolbox labels */
+/* Tablet (iPad / Android): slightly wider toolbox labels */
 html.vexgo-platform-tablet:not(.vexgo-mobile-active) .tabbed_container[data-style='default'] .tab_btn .name {
   font-size: 12px;
+}
+
+/* Android tablet — ensure app shell visible (fix black viewport after unlock) */
+html.vexgo-platform-android #app,
+html.vexgo-android-chrome-unlocked #app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #f0f0f0;
+}
+
+html.vexgo-platform-android .body_wrapper,
+html.vexgo-android-chrome-unlocked .body_wrapper {
+  min-height: calc(100vh - 52px);
+  min-height: calc(100dvh - 52px);
+}
+
+html.vexgo-platform-android.vexgo-mobile-active #master_wrapper,
+html.vexgo-android-chrome-unlocked.vexgo-mobile-active #master_wrapper {
+  will-change: transform;
+}
+
+/* Android tablet landscape: keep tab labels */
+@media (min-width: 600px) and (max-width: 1280px) and (hover: none) and (pointer: coarse) {
+  html.vexgo-platform-android .tabbed_container[data-style='default'] .tab_btn .name {
+    display: inline;
+    font-size: 11px;
+  }
+
+  html.vexgo-platform-android .topmenu .icon_wrapper .icon_caption {
+    font-size: 0.65em;
+  }
+}
+
+/* Android phone portrait */
+@media (max-width: 599px) and (hover: none) and (pointer: coarse) {
+  html.vexgo-platform-android .tabbed_container[data-style='default'] .tab_btn .name {
+    display: none;
+  }
 }
 
 /* Mac narrow window */

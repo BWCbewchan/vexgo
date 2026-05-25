@@ -1,0 +1,540 @@
+/* VEX GO — AI panel (replaces Feedback UI) */
+
+.topmenu .toolbar_btn.vexgo-ai-toolbar-btn .icon_caption {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.topmenu .toolbar_btn.vexgo-ai-toolbar-btn.active {
+  background: rgba(47, 146, 247, 0.22) !important;
+  box-shadow: inset 0 0 0 2px rgba(47, 146, 247, 0.55);
+}
+
+.topmenu .toolbar_btn.vexgo-ai-toolbar-btn.active .icon_caption {
+  color: #0875e2;
+}
+
+/* Hide native VEX slack feedback flyout only (not toolbar) */
+body.vexgo-ai-open .feedbackHeader {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+#vexgo-ai-panel {
+  display: none !important;
+  visibility: hidden;
+  pointer-events: none !important;
+  position: fixed;
+  z-index: 2147483644;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+#vexgo-ai-panel.is-open {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.topmenu #feedbackIcon.vexgo-ai-toolbar-btn,
+.topmenu button.tool_feedback.vexgo-ai-toolbar-btn {
+  display: inline-flex !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+}
+
+#vexgo-ai-panel .vexgo-ai-shell {
+  position: relative;
+  width: min(400px, calc(100vw - 20px));
+  height: min(82vh, 600px);
+  max-height: min(82vh, 600px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+  border: 1px solid #c6e5fb;
+}
+
+#vexgo-ai-panel .vexgo-ai-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: #2f92f7;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+#vexgo-ai-panel .vexgo-ai-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+#vexgo-ai-panel .vexgo-ai-settings-btn {
+  border: none;
+  background: transparent;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+#vexgo-ai-panel .vexgo-ai-settings-btn:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+#vexgo-ai-panel .vexgo-ai-settings-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+#vexgo-ai-panel .vexgo-ai-key-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 14px;
+  background: #fff3cd;
+  color: #92400e;
+  border-bottom: 1px solid #fde68a;
+}
+
+#vexgo-ai-panel .vexgo-ai-key-badge.is-set {
+  background: #dcfce7;
+  color: #166534;
+  border-bottom-color: #bbf7d0;
+}
+
+#vexgo-ai-panel .vexgo-ai-settings {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: rgba(15, 23, 42, 0.45);
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+#vexgo-ai-panel .vexgo-ai-settings.is-open {
+  display: flex;
+}
+
+#vexgo-ai-panel .vexgo-ai-settings-card {
+  width: 100%;
+  max-width: 320px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+#vexgo-ai-panel .vexgo-ai-settings-card h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  color: #0875e2;
+}
+
+#vexgo-ai-panel .vexgo-ai-settings-note,
+#vexgo-ai-panel .vexgo-ai-settings-status {
+  margin: 0 0 10px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #64748b;
+}
+
+#vexgo-ai-panel .vexgo-ai-settings-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0875e2;
+  margin: 8px 0 4px;
+}
+
+#vexgo-ai-panel .vexgo-ai-select {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 12px;
+  border: 1px solid #8fc7f8;
+  border-radius: 6px;
+  background: #fff;
+}
+
+#vexgo-ai-panel .vexgo-ai-settings-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+#vexgo-ai-panel .vexgo-ai-msg-loading {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+#vexgo-ai-panel .vexgo-ai-head-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#vexgo-ai-panel .vexgo-ai-head-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.06em;
+}
+
+#vexgo-ai-panel .vexgo-ai-close {
+  border: none;
+  background: transparent;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  touch-action: manipulation;
+}
+
+#vexgo-ai-panel .vexgo-ai-close:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+#vexgo-ai-panel .vexgo-ai-close svg {
+  width: 14px;
+  height: 14px;
+  fill: #fff;
+}
+
+#vexgo-ai-panel .vexgo-ai-tabs {
+  display: flex;
+  background: #e8f4fc;
+  border-bottom: 1px solid #c6e5fb;
+}
+
+#vexgo-ai-panel .vexgo-ai-tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3fa9f5;
+  cursor: pointer;
+  touch-action: manipulation;
+  border-bottom: 3px solid transparent;
+}
+
+#vexgo-ai-panel .vexgo-ai-tab.is-active {
+  color: #0875e2;
+  background: #fff;
+  border-bottom-color: #2f92f7;
+}
+
+#vexgo-ai-panel .vexgo-ai-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#vexgo-ai-panel .vexgo-ai-pane {
+  display: none;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#vexgo-ai-panel .vexgo-ai-pane.is-active {
+  display: flex;
+}
+
+#vexgo-ai-panel .vexgo-ai-pane-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  padding: 12px 14px 8px;
+}
+
+#vexgo-ai-panel .vexgo-ai-pane-footer {
+  flex: 0 0 auto;
+  padding: 10px 14px 12px;
+  border-top: 1px solid #c6e5fb;
+  background: #f8fcff;
+}
+
+#vexgo-ai-panel .vexgo-ai-pane-footer .vexgo-ai-actions {
+  margin-top: 8px;
+}
+
+#vexgo-ai-panel .vexgo-ai-pane-desc {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+#vexgo-ai-panel .vexgo-ai-context-block {
+  margin: 0 0 8px;
+  font-size: 11px;
+  border: 1px solid #c6e5fb;
+  border-radius: 6px;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+#vexgo-ai-panel .vexgo-ai-context-block summary {
+  cursor: pointer;
+  padding: 6px 8px;
+  font-weight: 600;
+  color: #0875e2;
+  user-select: none;
+  list-style: none;
+}
+
+#vexgo-ai-panel .vexgo-ai-context-block summary::-webkit-details-marker {
+  display: none;
+}
+
+#vexgo-ai-panel .vexgo-ai-context-body {
+  border-top: 1px solid #c6e5fb;
+}
+
+#vexgo-ai-panel .vexgo-ai-context-meta {
+  padding: 6px 8px 4px;
+  color: #64748b;
+  line-height: 1.35;
+  font-size: 10px;
+}
+
+#vexgo-ai-panel .vexgo-ai-context-preview,
+#vexgo-ai-panel [id^='vexgo-ai-context-preview-'] {
+  display: block;
+  margin: 0;
+  padding: 8px;
+  max-height: 120px;
+  overflow-x: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  font-size: 10px;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f0f9ff;
+  color: #0f172a;
+}
+
+#vexgo-ai-panel .vexgo-ai-code {
+  margin: 6px 0 0;
+  padding: 8px;
+  font-size: 11px;
+  line-height: 1.35;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 6px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+#vexgo-ai-panel .vexgo-ai-messages {
+  margin-bottom: 4px;
+  padding: 8px;
+  background: #f6fbff;
+  border: 1px solid #c6e5fb;
+  border-radius: 8px;
+  min-height: 100px;
+}
+
+#vexgo-ai-panel .vexgo-ai-msg {
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+#vexgo-ai-panel .vexgo-ai-msg-user {
+  color: #0f172a;
+}
+
+#vexgo-ai-panel .vexgo-ai-msg-bot {
+  color: #0875e2;
+}
+
+#vexgo-ai-panel .vexgo-ai-msg-bot strong,
+#vexgo-ai-panel .vexgo-ai-msg-user strong {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+  opacity: 0.75;
+}
+
+#vexgo-ai-panel .vexgo-ai-input,
+#vexgo-ai-panel .vexgo-ai-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #8fc7f8;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: none;
+  min-height: 56px;
+  max-height: 120px;
+}
+
+#vexgo-ai-panel .vexgo-ai-input:focus,
+#vexgo-ai-panel .vexgo-ai-textarea:focus {
+  outline: 2px solid #2f92f7;
+  outline-offset: 1px;
+}
+
+#vexgo-ai-panel .vexgo-ai-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 0;
+}
+
+#vexgo-ai-panel .vexgo-ai-btn {
+  flex: 1;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#vexgo-ai-panel .vexgo-ai-btn-primary {
+  background: #2f92f7;
+  color: #fff;
+}
+
+#vexgo-ai-panel .vexgo-ai-btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+#vexgo-ai-panel .vexgo-ai-btn-secondary {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+#vexgo-ai-panel .vexgo-ai-agent-log {
+  font-size: 11px;
+  line-height: 1.4;
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 4px;
+  min-height: 120px;
+}
+
+#vexgo-ai-panel .vexgo-ai-agent-log .log-line {
+  margin: 0 0 4px;
+}
+
+#vexgo-ai-panel .vexgo-ai-agent-status {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0875e2;
+  margin-bottom: 8px;
+}
+
+#vexgo-ai-panel .vexgo-ai-success {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+#vexgo-ai-panel .vexgo-ai-success.is-visible {
+  display: flex;
+}
+
+#vexgo-ai-panel .vexgo-ai-success h2 {
+  margin: 0 0 8px;
+  color: #0875e2;
+  font-size: 18px;
+}
+
+#vexgo-ai-panel .vexgo-ai-success p {
+  margin: 0 0 16px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+html.vexgo-mobile-active #vexgo-ai-panel .vexgo-ai-shell {
+  width: min(360px, calc(100vw - 16px));
+  height: min(75vh, 520px);
+  max-height: min(75vh, 520px);
+}
+
+html.vexgo-mobile-active #vexgo-ai-panel .vexgo-ai-context-preview,
+html.vexgo-mobile-active #vexgo-ai-panel [id^='vexgo-ai-context-preview-'] {
+  max-height: 96px;
+}
+
+#vexgo-ai-panel .vexgo-ai-apply-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 8px;
+}
+
+#vexgo-ai-panel .vexgo-ai-apply-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: #334155;
+  cursor: pointer;
+  user-select: none;
+}
+
+#vexgo-ai-panel .vexgo-ai-apply-label input {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+#vexgo-ai-panel .vexgo-ai-msg-apply {
+  border-left: 3px solid #16a34a;
+  background: #f0fdf4;
+}
+
+#vexgo-ai-panel .vexgo-ai-msg-apply-err {
+  border-left: 3px solid #dc2626;
+  background: #fef2f2;
+}

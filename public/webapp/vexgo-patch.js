@@ -80,6 +80,9 @@
     'fire os',
     'fireos',
     'android browser',
+    'unsupported vexcode android',
+    'unsupported vexcode fireos',
+    'fireos browser',
   ];
 
   function dismissUnsupportedModals() {
@@ -576,6 +579,88 @@
     }, 400);
   }
 
+  /** If GO still renders empty body on Android, show recovery panel. */
+  function watchAndroidEmptyShell() {
+    var d = window.__VEXGO_REAL_DEVICE__;
+    if (!d || !d.android) return;
+
+    var shown = false;
+    function check() {
+      if (shown) return;
+      var body = document.querySelector('.body_wrapper');
+      var hasEditor =
+        document.querySelector('.blocklySvg') ||
+        document.querySelector('.editorContainer') ||
+        document.querySelector('.blocks_workspace_container');
+      if (!body || hasEditor) return;
+      if (body.children.length > 0) return;
+
+      shown = true;
+      var panel = document.createElement('div');
+      panel.id = 'vexgo-android-recover';
+      panel.setAttribute('role', 'alert');
+      panel.style.cssText =
+        'position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:#1a1a1a;color:#f5f5f5;font-family:system-ui,-apple-system,sans-serif';
+      panel.innerHTML =
+        '<div style="max-width:420px;text-align:center">' +
+        '<p style="margin:0 0 12px;font-size:15px;font-weight:700;color:#f97316">VEX GO — giao diện chưa tải</p>' +
+        '<p style="margin:0 0 16px;font-size:14px;line-height:1.5;color:#d4d4d4">Trên Android cần <b>Chrome</b>. Nếu vẫn màn hình đen: tải lại trang hoặc xóa cache.</p>' +
+        '<button type="button" style="margin:4px;padding:12px 20px;border:none;border-radius:10px;font-weight:700;background:#0875e2;color:#fff">Tải lại</button>' +
+        '<button type="button" style="margin:4px;padding:12px 20px;border:1px solid #525252;border-radius:10px;font-weight:600;background:transparent;color:#e5e5e5">Đóng</button>' +
+        '</div>';
+      document.body.appendChild(panel);
+      var buttons = panel.querySelectorAll('button');
+      buttons[0].onclick = function () {
+        location.reload();
+      };
+      buttons[1].onclick = function () {
+        panel.remove();
+      };
+    }
+
+    var ticks = 0;
+    var timer = setInterval(function () {
+      ticks += 1;
+      check();
+      if (ticks >= 40 || shown) clearInterval(timer);
+    }, 500);
+  }
+
+  /** Expose VEXcode appState / Blockly bridge for AI panels (after main.bundle). */
+  function bridgeWebappForVexgoAi() {
+    var tries = 0;
+    var wait = setInterval(function () {
+      tries += 1;
+      if (typeof window.webapp === 'undefined') {
+        if (tries >= 120) clearInterval(wait);
+        return;
+      }
+      clearInterval(wait);
+      try {
+        if (window.webapp.appState) window.appState = window.webapp.appState;
+        window.VEXGOBlocklyBridge = {
+          getControllerWorkspace: function () {
+            var w = window.webapp;
+            if (!w || !w.BlocklyController) return null;
+            var ctrl = w.BlocklyController.getCurrentMainController();
+            return ctrl && ctrl.blocklyWorkspace ? ctrl.blocklyWorkspace : null;
+          },
+          appendBlockFromXML: function (xml, ws) {
+            var w = window.webapp;
+            if (!w || !w.BlocklyController) return undefined;
+            return w.BlocklyController.appendBlockFromXML(xml, ws);
+          },
+          setBlocksMode: function () {
+            if (window.webapp.appState && window.webapp.appState.setAppState) {
+              return window.webapp.appState.setAppState({ mode: 'Blocks' });
+            }
+            return Promise.resolve();
+          },
+        };
+      } catch (e) {}
+    }, 250);
+  }
+
   waitForAppReady(function (ready) {
     if (!ready) return;
     lockLanguageOnce();
@@ -583,5 +668,7 @@
     watchTopmenuForThemeToggle();
     dismissUnsupportedModals();
     bridgeGoStatusForClassroom();
+    bridgeWebappForVexgoAi();
+    watchAndroidEmptyShell();
   });
 })();

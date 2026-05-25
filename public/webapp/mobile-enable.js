@@ -50,6 +50,10 @@
     'mobile devices',
     'not support text project on tablets',
     'laptop or desktop',
+    'unsupported vexcode android',
+    'unsupported vexcode fireos',
+    'android browser',
+    'fireos browser',
   ];
 
   function defineNavProp(name, value) {

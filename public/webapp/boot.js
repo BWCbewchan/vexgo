@@ -126,6 +126,37 @@
       platformUi.src = 'vexgo-platform-ui.js';
       platformUi.defer = true;
       document.body.appendChild(platformUi);
+
+      if (!window.VEXGOBlocklyEditor) {
+        var blocklyScript = document.createElement('script');
+        blocklyScript.src = 'vexgo-blockly-editor.js';
+        blocklyScript.defer = true;
+        document.body.appendChild(blocklyScript);
+      }
+      if (!window.VEXGOCodeEditor) {
+        var editorScript = document.createElement('script');
+        editorScript.src = 'vexgo-code-editor.js';
+        editorScript.defer = true;
+        document.body.appendChild(editorScript);
+      }
+      if (!window.VEXGOProjectContext) {
+        var ctxScript = document.createElement('script');
+        ctxScript.src = 'vexgo-project-context.js';
+        ctxScript.defer = true;
+        document.body.appendChild(ctxScript);
+      }
+      if (!window.VEXGOGemini) {
+        var geminiScript = document.createElement('script');
+        geminiScript.src = 'vexgo-gemini.js';
+        geminiScript.defer = true;
+        document.body.appendChild(geminiScript);
+      }
+      if (!window.VEXGOAI) {
+        var aiPanel = document.createElement('script');
+        aiPanel.src = 'vexgo-ai-panel.js';
+        aiPanel.defer = true;
+        document.body.appendChild(aiPanel);
+      }
     });
   }
 
